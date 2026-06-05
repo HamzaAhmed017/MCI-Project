@@ -11,12 +11,24 @@ class App(tk.Tk):
         super().__init__()
 
         self.title("MCI Projekt")
-        self.geometry("900x700")
+        self.attributes("-fullscreen", True)
+
+        self.header = tk.Frame(self)
+        self.header.pack(fill="x")
+
+        tk.Button(
+            self.header,
+            text="Beenden",
+            command=self.destroy
+        ).pack(side="right", padx=10, pady=10)
+
+        self.content = tk.Frame(self)
+        self.content.pack(fill="both", expand=True)
 
         self.show_main_menu()
 
     def clear_window(self):
-        for widget in self.winfo_children():
+        for widget in self.content.winfo_children():
             widget.destroy()
 
     def show_main_menu(self):
