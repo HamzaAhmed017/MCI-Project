@@ -1,9 +1,9 @@
 import tkinter as tk
 
-from screens.main_menu import MainMenu
-from screens.augenbewegung import AugenBewegung
-from screens.fitts_law import FittsLaw
-from screens.analyse import Analyse
+from mainmenu.main_menu import MainMenu
+from augenbewegung.augenbewegung import AugenBewegung
+from fittslaw.fitts_law import FittsLaw
+from analyse.analyse import Analyse
 
 
 class App(tk.Tk):
