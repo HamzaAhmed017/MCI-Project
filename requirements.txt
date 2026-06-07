@@ -1,0 +1,2 @@
+# Aktuell werden keine externen Python-Pakete benötigt.
+# Tkinter, math, random, time und abc gehören zur Python-Standardbibliothek.
