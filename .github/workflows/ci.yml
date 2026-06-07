@@ -37,7 +37,10 @@ jobs:
         run: python -c "import tkinter; print(tkinter.TkVersion)"
 
       - name: Python-Syntax prüfen
-        run: python -m compileall -q app.py main.py main
+        run: python -m compileall -q main tests
+
+      - name: Anwendung importieren
+        run: python -c "from main.app import App; from main.main import run"
 
       - name: Tests ausführen
         shell: pwsh
