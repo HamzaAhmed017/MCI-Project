@@ -1,12 +1,12 @@
 import random
-
 from .animation import Animation
 
 
+# Animation eines Blickpunkts, der sprunghaft seine Position wechselt.
 class Sakkaden(Animation):
-    """Bewegt einen Blickpunkt in zufälligen Sprüngen über das Canvas."""
 
     def __init__(self, canvas):
+        """Initialisiert Größe und Canvas-ID des Blickpunkts."""
         super().__init__(canvas)
         self.radius = 15
         self.point = None
@@ -23,7 +23,8 @@ class Sakkaden(Animation):
 
     def animate(self):
         """Verschiebt den Blickpunkt und plant die nächste Sakkade."""
-        if not self.running or self.point is None:
+        # Bricht ab, wenn die Animation gestoppt wurde oder kein Punkt existiert.
+        if self.point is None:
             return
 
         width = self.canvas.winfo_width()
@@ -34,9 +35,11 @@ class Sakkaden(Animation):
             self.after_id = self.canvas.after(50, self.animate)
             return
 
+        # Wählt eine zufällige Position, an der der Punkt vollständig sichtbar ist.
         x = random.randint(self.radius, width - self.radius)
         y = random.randint(self.radius, height - self.radius)
 
+        # Verschiebt den Punkt unmittelbar an die neue Position.
         self.canvas.coords(
             self.point,
             x - self.radius,
@@ -45,5 +48,8 @@ class Sakkaden(Animation):
             y + self.radius
         )
 
+        # Wählt eine realistische Pause bis zum nächsten Blicksprung.
         delay = random.randint(800, 1100)
+
+        # Plant den nächsten Animationsschritt und speichert dessen Tkinter-ID.
         self.after_id = self.canvas.after(delay, self.animate)
