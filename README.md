@@ -46,7 +46,11 @@ Man kann die Repository installieren oder in einem lokalen Ordner klonen durch
 ````git clone https://github.com/HamzaAhmed017/MCI-Project.git ````. 
 Führe dannach den folgenden Befehl aus um die Abhängigkeiten zu installieren
 ````pip install -r requirements.txt````.
-Als Letztes starte die main.py Datei durch ````python main.py```` im Ordner
+Als Letztes startest du die Anwendung im Projektordner mit:
+
+```powershell
+python -m main
+```
 
 Autoren
 Hamza Ahmed

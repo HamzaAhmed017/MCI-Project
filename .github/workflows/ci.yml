@@ -8,7 +8,7 @@ permissions:
   contents: read
 
 jobs:
-  syntax-check:
+  quality-check:
     name: Python ${{ matrix.python-version }}
     runs-on: windows-latest
 
@@ -25,7 +25,7 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Python installieren
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python-version }}
           cache: pip
@@ -37,4 +37,18 @@ jobs:
         run: python -c "import tkinter; print(tkinter.TkVersion)"
 
       - name: Python-Syntax prüfen
-        run: python -m compileall -q .
+        run: python -m compileall -q main tests
+
+      - name: Anwendung importieren
+        run: python -c "from main.app import App; from main.main import run"
+
+      - name: Tests ausführen
+        shell: pwsh
+        run: |
+          $tests = Get-ChildItem tests -Recurse -Filter "test_*.py" -ErrorAction SilentlyContinue
+
+          if ($tests) {
+            python -m unittest discover -s tests -p "test_*.py" -v
+          } else {
+            Write-Host "Keine Tests unter tests/ gefunden."
+          }
