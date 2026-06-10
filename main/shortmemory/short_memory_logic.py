@@ -21,14 +21,16 @@ class ShortMemoryResult:
 class ShortMemoryTest:
     """Enthält die testbezogene Logik für den Kurzzeitgedächtnis-Test."""
 
+    MIN_LENGTH = 3
     MAX_LENGTH = 15
     REPETITIONS_PER_LENGTH = 3
     ALPHABET = string.ascii_uppercase + string.digits
 
     def __init__(self, mode, csv_file=None):
-        """Initialisiert einen Testdurchlauf mit zufälliger Trial-Reihenfolge."""
+        """Initialisiert einen Testdurchlauf mit aufsteigender Trial-Reihenfolge."""
         self.mode = mode
         self.csv_file = csv_file or Path(__file__).with_name("short_memory_results.csv")
+        self._clear_csv_file()
         self.trials = self._create_trials()
         self.current_index = 0
         self.current_sequence = ""
@@ -93,14 +95,12 @@ class ShortMemoryTest:
         return "3er-Pakete" if self.mode == "chunked" else "Normale Darstellung"
 
     def _create_trials(self):
-        """Erstellt die 45 Trial-Längen und mischt ihre Reihenfolge zufällig."""
-        trials = [
+        """Erstellt je drei Trials für die Längen 3 bis 15 in fester Reihenfolge."""
+        return [
             length
-            for length in range(1, self.MAX_LENGTH + 1)
+            for length in range(self.MIN_LENGTH, self.MAX_LENGTH + 1)
             for _ in range(self.REPETITIONS_PER_LENGTH)
         ]
-        random.shuffle(trials)
-        return trials
 
     def _create_sequence(self, length):
         """Erzeugt eine zufällige Zeichenkette aus Großbuchstaben und Ziffern."""
@@ -119,6 +119,11 @@ class ShortMemoryTest:
             if not file_exists:
                 writer.writeheader()
             writer.writerow(result.__dict__)
+
+    def _clear_csv_file(self):
+        """Löscht beim Start eines neuen Testdurchlaufs alle bisherigen CSV-Daten."""
+        self.csv_file.parent.mkdir(parents=True, exist_ok=True)
+        self.csv_file.unlink(missing_ok=True)
 
     def _char_at(self, value, index):
         """Liefert ein Zeichen an einer Position oder einen Leerwert außerhalb der Länge."""

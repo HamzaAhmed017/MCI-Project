@@ -7,8 +7,8 @@ from shortmemory.short_memory_logic import ShortMemoryTest
 class ShortMemory(tk.Frame):
     """Verwaltet die Oberfläche und Steuerung des Kurzzeitgedächtnis-Tests."""
 
-    DISPLAY_MS = 15_000
-    BLANK_MS = 10_000
+    DISPLAY_MS = 8_000
+    BLANK_MS = 8_000
 
     def __init__(self, master, app):
         """Initialisiert die GUI-Ansicht und zeigt den Startbildschirm an."""
@@ -54,7 +54,7 @@ class ShortMemory(tk.Frame):
 
         tk.Label(
             main_frame,
-            text="45 Durchgänge: Längen 1 bis 15, jede Länge 3-mal.",
+            text="39 Durchgänge: Längen 3 bis 15, jede Länge 3-mal.",
             font=("Arial", 13)
         ).pack(pady=10)
 
@@ -95,7 +95,7 @@ class ShortMemory(tk.Frame):
         self._show_next_sequence()
 
     def _show_next_sequence(self):
-        """Zeigt die nächste zu merkende Zeichenkette für 15 Sekunden an."""
+        """Zeigt die nächste zu merkende Zeichenkette für 8 Sekunden an."""
         if not self.test.has_next_trial():
             self._show_plot()
             return
@@ -126,14 +126,14 @@ class ShortMemory(tk.Frame):
 
         tk.Label(
             frame,
-            text="Nach 15 Sekunden verschwindet die Zeichenkette.",
+            text="Nach 8 Sekunden verschwindet die Zeichenkette.",
             font=("Arial", 12)
         ).pack(pady=10)
 
         self.after_id = self.after(self.DISPLAY_MS, self._show_blank_screen)
 
     def _show_blank_screen(self):
-        """Zeigt zwischen Merken und Eingabe für 10 Sekunden einen leeren Bildschirm."""
+        """Zeigt zwischen Merken und Eingabe für 8 Sekunden einen leeren Bildschirm."""
         self.after_id = None
         self._clear()
 
@@ -148,7 +148,7 @@ class ShortMemory(tk.Frame):
 
         tk.Label(
             frame,
-            text="Die Eingabe erscheint in 10 Sekunden.",
+            text="Die Eingabe erscheint in 8 Sekunden.",
             font=("Arial", 13)
         ).pack(pady=10)
 
@@ -296,8 +296,14 @@ class ShortMemory(tk.Frame):
         canvas.create_text(width / 2, height - 20, text="Zeichenkettenlänge", font=("Arial", 12))
         canvas.create_text(20, height / 2, text="Fehler", angle=90, font=("Arial", 12))
 
-        for length in range(1, ShortMemoryTest.MAX_LENGTH + 1):
-            x = self._scale(length, 1, ShortMemoryTest.MAX_LENGTH, left, left + plot_width)
+        for length in range(ShortMemoryTest.MIN_LENGTH, ShortMemoryTest.MAX_LENGTH + 1):
+            x = self._scale(
+                length,
+                ShortMemoryTest.MIN_LENGTH,
+                ShortMemoryTest.MAX_LENGTH,
+                left,
+                left + plot_width
+            )
             canvas.create_line(x, top + plot_height, x, top + plot_height + 5)
             canvas.create_text(x, top + plot_height + 20, text=str(length), font=("Arial", 9))
 
@@ -308,7 +314,13 @@ class ShortMemory(tk.Frame):
             canvas.create_line(left, y, left + plot_width, y, fill="#eeeeee")
 
         for result in self.test.results:
-            x = self._scale(result.length, 1, ShortMemoryTest.MAX_LENGTH, left, left + plot_width)
+            x = self._scale(
+                result.length,
+                ShortMemoryTest.MIN_LENGTH,
+                ShortMemoryTest.MAX_LENGTH,
+                left,
+                left + plot_width
+            )
             y = self._scale(result.errors, 0, max_errors, top + plot_height, top)
             jitter_x = random.uniform(-5, 5)
             jitter_y = random.uniform(-5, 5)
