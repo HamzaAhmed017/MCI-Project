@@ -4,6 +4,7 @@ from .analyse.analyse import Analyse
 from .augenbewegung.augenbewegung import AugenBewegung
 from .fittslaw.fitts_law import FittsLaw
 from .mainmenu.main_menu import MainMenu
+from .shortmemory.short_memory import ShortMemory
 
 
 class App(tk.Tk):
@@ -48,6 +49,12 @@ class App(tk.Tk):
         self.clear_window()
 
         AugenBewegung(self.content, self).pack(fill="both", expand=True)
+
+    def show_short_memory_screen(self):
+        """Wechselt zur Ansicht dem Kurzzeitgedächtnis."""
+        self.clear_window()
+
+        ShortMemory(self.content, self).pack(fill="both", expand=True)
 
     def show_fitts_law_screen(self):
         """Wechselt zur Ansicht der Fitts-Law-Aufgabe."""

@@ -14,12 +14,20 @@ class MainMenu(tk.Frame):
         # Zeigt die Überschrift des Projekts an.
         tk.Label(self, text="MCI Projekt", font=("Arial", 24)).pack(pady=50)
 
-        # Öffnet die Ansicht mit den verschiedenen Augenbewegungen.
+        # Öffnet die Ansicht für die verschiedenen Animationen für Augenbewegungen.
         tk.Button(
             self,
             text="Augenbewegungen",
             width=30,
             command=app.show_eye_movement_screen
+        ).pack(pady=10)
+
+        # Öffnet die Ansicht für die verschiedenen Experimente der
+        tk.Button(
+            self,
+            text="Kurzzeitgedächtnis test",
+            width=30,
+            command=app.show_short_memory_screen
         ).pack(pady=10)
 
         # Öffnet die Fitts-Law-Aufgabe.
